@@ -282,6 +282,44 @@ namespace OneAssist.SlideCompare.Models
                 }
             }
         }
+
+        private string _cachedSearchableText;
+
+        public bool MatchesSearch(string queryLower)
+        {
+            if (string.IsNullOrWhiteSpace(queryLower)) return true;
+
+            if (_cachedSearchableText == null)
+            {
+                var sb = new System.Text.StringBuilder();
+                sb.Append(SourceSlideNumber).Append(' ');
+                sb.Append(PrimaryDestinationSlide).Append(' ');
+                if (DestinationSlideNumbers != null) sb.Append(string.Join(" ", DestinationSlideNumbers)).Append(' ');
+                if (SourceSlideNumbers != null) sb.Append(string.Join(" ", SourceSlideNumbers)).Append(' ');
+                if (!string.IsNullOrEmpty(SourceTitle)) sb.Append(SourceTitle).Append(' ');
+                if (!string.IsNullOrEmpty(DestinationTitle)) sb.Append(DestinationTitle).Append(' ');
+                if (!string.IsNullOrEmpty(SummaryText)) sb.Append(SummaryText).Append(' ');
+                if (!string.IsNullOrEmpty(SpeakerNotesDiff)) sb.Append(SpeakerNotesDiff).Append(' ');
+
+                if (ShapeResults != null)
+                {
+                    foreach (var sh in ShapeResults)
+                    {
+                        if (!string.IsNullOrEmpty(sh.SourceShapeName)) sb.Append(sh.SourceShapeName).Append(' ');
+                        if (!string.IsNullOrEmpty(sh.DestinationShapeName)) sb.Append(sh.DestinationShapeName).Append(' ');
+                        if (!string.IsNullOrEmpty(sh.SourceText)) sb.Append(sh.SourceText).Append(' ');
+                        if (!string.IsNullOrEmpty(sh.DestinationText)) sb.Append(sh.DestinationText).Append(' ');
+                        if (!string.IsNullOrEmpty(sh.TextDiff)) sb.Append(sh.TextDiff).Append(' ');
+                        if (!string.IsNullOrEmpty(sh.Details)) sb.Append(sh.Details).Append(' ');
+                        if (!string.IsNullOrEmpty(sh.PositionDiff)) sb.Append(sh.PositionDiff).Append(' ');
+                    }
+                }
+
+                _cachedSearchableText = sb.ToString().ToLowerInvariant();
+            }
+
+            return _cachedSearchableText.Contains(queryLower);
+        }
     }
 
     /// <summary>

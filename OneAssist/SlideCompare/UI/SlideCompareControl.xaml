@@ -7,7 +7,7 @@
              xmlns:models="clr-namespace:OneAssist.SlideCompare.Models"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="460"
-             Background="#0B1120" Foreground="#F8FAFC"
+             Background="#202020" Foreground="#F3F3F3"
              FontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
 
     <UserControl.Resources>
@@ -17,11 +17,11 @@
         <local:ShapeStatusColorConverter x:Key="ShapeColorConv" />
 
         <Style x:Key="ModernButton" TargetType="Button">
-            <Setter Property="Background" Value="#1E293B"/>
-            <Setter Property="Foreground" Value="#F8FAFC"/>
-            <Setter Property="BorderBrush" Value="#334155"/>
+            <Setter Property="Background" Value="#2E2E2E"/>
+            <Setter Property="Foreground" Value="#F3F3F3"/>
+            <Setter Property="BorderBrush" Value="#444444"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Padding" Value="10,5"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -29,7 +29,7 @@
                         <Border Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}" 
-                                CornerRadius="6">
+                                CornerRadius="4">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
                         </Border>
                     </ControlTemplate>
@@ -37,8 +37,8 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#334155"/>
-                    <Setter Property="BorderBrush" Value="#475569"/>
+                    <Setter Property="Background" Value="#3D3D3D"/>
+                    <Setter Property="BorderBrush" Value="#555555"/>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.4"/>
@@ -46,20 +46,27 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="IconButton" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+
         <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource ModernButton}">
-            <Setter Property="Background" Value="#0284C7"/>
-            <Setter Property="BorderBrush" Value="#38BDF8"/>
+            <Setter Property="Background" Value="#D24726"/>
+            <Setter Property="BorderBrush" Value="#E05B3B"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#0369A1"/>
-                    <Setter Property="BorderBrush" Value="#7DD3FC"/>
+                    <Setter Property="Background" Value="#B83B1B"/>
+                    <Setter Property="BorderBrush" Value="#F07050"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
 
-    <Grid Margin="14">
+    <Grid Margin="12">
         <Grid.RowDefinitions>
             <!-- Header -->
             <RowDefinition Height="Auto"/>
@@ -77,8 +84,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- 1. Header -->
-        <Border Grid.Row="0" Margin="0,0,0,14" BorderBrush="#1E293B" BorderThickness="0,0,0,1" Padding="0,0,0,10">
+        <!-- 1. Header (Icon-only action buttons: Files, Restore View, Settings) -->
+        <Border Grid.Row="0" Margin="0,0,0,12" BorderBrush="#383838" BorderThickness="0,0,0,1" Padding="0,0,0,10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -86,40 +93,38 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="⚡" FontSize="20" Margin="0,0,8,0" Foreground="#38BDF8"/>
-                        <TextBlock Text="Slide Compare" FontSize="18" FontWeight="Bold" Foreground="#F8FAFC"/>
+                        <TextBlock Text="⚡" FontSize="18" Margin="0,0,6,0" Foreground="#D24726"/>
+                        <TextBlock Text="PowerPoint-Suite" FontSize="16" FontWeight="Bold" Foreground="#F3F3F3"/>
+                        <TextBlock Text=" | Slide Compare" FontSize="13" FontWeight="SemiBold" Foreground="#A6A6A6" Margin="4,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <TextBlock Text="Intelligent Content &amp; Difference Analysis" FontSize="11" Foreground="#94A3B8" Margin="28,2,0,0"/>
+                    <TextBlock Text="Intelligent Content &amp; Difference Analysis" FontSize="11" Foreground="#A6A6A6" Margin="24,2,0,0"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <!-- Files Toggle Button (Visible when comparison has run so user can bring files panel back) -->
-                    <Button Style="{StaticResource ModernButton}" Command="{Binding ToggleFilesVisibilityCommand}" ToolTip="{Binding FilesButtonTooltip}" Padding="8,4" Margin="0,0,6,0"
+                    <!-- Files Toggle Button (Only Icon) -->
+                    <Button Style="{StaticResource IconButton}" Command="{Binding ToggleFilesVisibilityCommand}" ToolTip="{Binding FilesButtonTooltip}" Margin="0,0,5,0"
                             Visibility="{Binding HasResults, Converter={StaticResource BoolToVis}}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📁" FontSize="12" Margin="0,0,4,0"/>
-                            <TextBlock Text="Files" FontSize="11" Foreground="#CBD5E1"/>
-                        </StackPanel>
+                        <TextBlock Text="📁" FontSize="13" Foreground="#CCCCCC" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Button>
-                    <!-- Maximize / Restore Icon Button -->
-                    <Button Style="{StaticResource ModernButton}" Command="{Binding ToggleMaximizeResultsCommand}" ToolTip="{Binding MaximizeButtonTooltip}" Padding="8,4" Margin="0,0,6,0"
+                    <!-- Maximize / Restore Button (Only Icon) -->
+                    <Button Style="{StaticResource IconButton}" Command="{Binding ToggleMaximizeResultsCommand}" ToolTip="{Binding MaximizeButtonTooltip}" Margin="0,0,5,0"
                             Visibility="{Binding HasResults, Converter={StaticResource BoolToVis}}">
-                        <TextBlock Text="{Binding MaximizeButtonIcon}" FontSize="13" Foreground="#38BDF8" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding MaximizeButtonIcon}" FontSize="13" Foreground="#38BDF8" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Button>
-                    <!-- Settings -->
-                    <Button Style="{StaticResource ModernButton}" Command="{Binding ToggleSettingsCommand}" ToolTip="Comparison Settings" Padding="8,4">
-                        <TextBlock Text="⚙ Settings" FontSize="11"/>
+                    <!-- Settings Button (Only Icon) -->
+                    <Button Style="{StaticResource IconButton}" Command="{Binding ToggleSettingsCommand}" ToolTip="Comparison Settings" Margin="0,0,0,0">
+                        <TextBlock Text="⚙" FontSize="14" Foreground="#CCCCCC" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Button>
                 </StackPanel>
             </Grid>
         </Border>
 
         <!-- 2. Source & Destination Card (Auto-hidden once compare runs, toggleable via Files button) -->
-        <Border Grid.Row="1" Background="#131D31" CornerRadius="8" BorderBrush="#1E293B" BorderThickness="1" Padding="12" Margin="0,0,0,10"
+        <Border Grid.Row="1" Background="#2B2B2B" CornerRadius="6" BorderBrush="#383838" BorderThickness="1" Padding="12" Margin="0,0,0,10"
                 Visibility="{Binding IsFilesSectionVisible, Converter={StaticResource BoolToVis}}">
             <StackPanel Orientation="Vertical">
                 <!-- Header with Hide button -->
                 <Grid Margin="0,0,0,8">
-                    <TextBlock Text="PRESENTATIONS" FontSize="10" FontWeight="Bold" Foreground="#64748B" VerticalAlignment="Center"/>
+                    <TextBlock Text="PRESENTATIONS" FontSize="10" FontWeight="Bold" Foreground="#888888" VerticalAlignment="Center"/>
                     <Button Style="{StaticResource ModernButton}" Command="{Binding ToggleFilesVisibilityCommand}" Content="▲ Hide" FontSize="10" Padding="6,2" HorizontalAlignment="Right" ToolTip="Hide file panel to maximize results area"/>
                 </Grid>
 
@@ -130,7 +135,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Destination:" FontSize="11" FontWeight="SemiBold" Foreground="#38BDF8" Width="75" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" Text="{Binding DestinationPresentationName}" FontSize="12" Foreground="#F1F5F9" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Grid.Column="1" Text="{Binding DestinationPresentationName}" FontSize="12" Foreground="#F3F3F3" TextTrimming="CharacterEllipsis"/>
                 </Grid>
 
                 <!-- Source File -->
@@ -140,8 +145,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Source:" FontSize="11" FontWeight="SemiBold" Foreground="#94A3B8" Width="75" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" Text="{Binding SourceFileName}" ToolTip="{Binding SourceFilePath}" FontSize="12" Foreground="#CBD5E1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="Source:" FontSize="11" FontWeight="SemiBold" Foreground="#A6A6A6" Width="75" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding SourceFileName}" ToolTip="{Binding SourceFilePath}" FontSize="12" Foreground="#CCCCCC" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                     <Button Grid.Column="2" Style="{StaticResource ModernButton}" Command="{Binding BrowseSourceCommand}" Padding="8,4" Content="Browse..." FontSize="11" Margin="6,0,0,0"/>
                 </Grid>
 
@@ -154,20 +159,20 @@
                 </Button>
 
                 <!-- Settings Expander Flyout -->
-                <Border Margin="0,10,0,0" Padding="10" Background="#0F172A" CornerRadius="6" BorderBrush="#334155" BorderThickness="1"
+                <Border Margin="0,10,0,0" Padding="10" Background="#202020" CornerRadius="4" BorderBrush="#3E3E3E" BorderThickness="1"
                         Visibility="{Binding IsSettingsOpen, Converter={StaticResource BoolToVis}}">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="Comparison Settings" FontWeight="Bold" FontSize="12" Foreground="#38BDF8" Margin="0,0,0,8"/>
                         <UniformGrid Columns="2">
-                            <CheckBox Content="Compare Text" IsChecked="{Binding Settings.CompareText}" Foreground="#CBD5E1" Margin="0,3"/>
-                            <CheckBox Content="Compare Shapes" IsChecked="{Binding Settings.CompareShapes}" Foreground="#CBD5E1" Margin="0,3"/>
-                            <CheckBox Content="Compare Tables" IsChecked="{Binding Settings.CompareTables}" Foreground="#CBD5E1" Margin="0,3"/>
-                            <CheckBox Content="Compare Charts" IsChecked="{Binding Settings.CompareCharts}" Foreground="#CBD5E1" Margin="0,3"/>
-                            <CheckBox Content="Compare Images" IsChecked="{Binding Settings.CompareImages}" Foreground="#CBD5E1" Margin="0,3"/>
-                            <CheckBox Content="Compare Formatting" IsChecked="{Binding Settings.CompareFormatting}" Foreground="#CBD5E1" Margin="0,3"/>
-                            <CheckBox Content="Compare Position" IsChecked="{Binding Settings.ComparePosition}" Foreground="#CBD5E1" Margin="0,3"/>
-                            <CheckBox Content="Speaker Notes" IsChecked="{Binding Settings.CompareSpeakerNotes}" Foreground="#CBD5E1" Margin="0,3"/>
-                            <CheckBox Content="Hidden Slides" IsChecked="{Binding Settings.CompareHiddenSlides}" Foreground="#CBD5E1" Margin="0,3"/>
+                            <CheckBox Content="Compare Text" IsChecked="{Binding Settings.CompareText}" Foreground="#CCCCCC" Margin="0,3"/>
+                            <CheckBox Content="Compare Shapes" IsChecked="{Binding Settings.CompareShapes}" Foreground="#CCCCCC" Margin="0,3"/>
+                            <CheckBox Content="Compare Tables" IsChecked="{Binding Settings.CompareTables}" Foreground="#CCCCCC" Margin="0,3"/>
+                            <CheckBox Content="Compare Charts" IsChecked="{Binding Settings.CompareCharts}" Foreground="#CCCCCC" Margin="0,3"/>
+                            <CheckBox Content="Compare Images" IsChecked="{Binding Settings.CompareImages}" Foreground="#CCCCCC" Margin="0,3"/>
+                            <CheckBox Content="Compare Formatting" IsChecked="{Binding Settings.CompareFormatting}" Foreground="#CCCCCC" Margin="0,3"/>
+                            <CheckBox Content="Compare Position" IsChecked="{Binding Settings.ComparePosition}" Foreground="#CCCCCC" Margin="0,3"/>
+                            <CheckBox Content="Speaker Notes" IsChecked="{Binding Settings.CompareSpeakerNotes}" Foreground="#CCCCCC" Margin="0,3"/>
+                            <CheckBox Content="Hidden Slides" IsChecked="{Binding Settings.CompareHiddenSlides}" Foreground="#CCCCCC" Margin="0,3"/>
                         </UniformGrid>
                         <Grid Margin="0,8,0,0">
                             <Grid.ColumnDefinitions>
@@ -175,7 +180,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Threshold:" FontSize="11" Foreground="#94A3B8" VerticalAlignment="Center"/>
+                            <TextBlock Text="Threshold:" FontSize="11" Foreground="#A6A6A6" VerticalAlignment="Center"/>
                             <Slider Grid.Column="1" Minimum="0.4" Maximum="0.95" Value="{Binding Settings.SimilarityThreshold}" Margin="8,0" SmallChange="0.05"/>
                             <TextBlock Grid.Column="2" Text="{Binding Settings.SimilarityThreshold, StringFormat={}{0:P0}}" FontSize="11" Foreground="#38BDF8" VerticalAlignment="Center"/>
                         </Grid>
@@ -185,23 +190,23 @@
         </Border>
 
         <!-- 3. Progress Bar -->
-        <Border Grid.Row="2" Background="#1E293B" CornerRadius="6" Padding="10" Margin="0,0,0,10"
+        <Border Grid.Row="2" Background="#2B2B2B" CornerRadius="4" Padding="10" Margin="0,0,0,10"
                 Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}">
             <StackPanel Orientation="Vertical">
                 <Grid Margin="0,0,0,6">
                     <TextBlock Text="{Binding ProgressText}" FontSize="12" Foreground="#38BDF8"/>
                     <Button Style="{StaticResource ModernButton}" Command="{Binding CancelCompareCommand}" Content="Cancel" HorizontalAlignment="Right" Padding="6,2" FontSize="10"/>
                 </Grid>
-                <ProgressBar Height="6" Minimum="0" Maximum="100" Value="{Binding ProgressPercentage}" Foreground="#38BDF8" Background="#0F172A"/>
+                <ProgressBar Height="6" Minimum="0" Maximum="100" Value="{Binding ProgressPercentage}" Foreground="#38BDF8" Background="#1C1C1C"/>
             </StackPanel>
         </Border>
 
         <!-- 4a. Interactive Summary Dashboard (Expanded View) -->
-        <Border Grid.Row="3" Background="#131D31" CornerRadius="8" BorderBrush="#1E293B" BorderThickness="1" Padding="8" Margin="0,0,0,10"
+        <Border Grid.Row="3" Background="#2B2B2B" CornerRadius="6" BorderBrush="#383838" BorderThickness="1" Padding="8" Margin="0,0,0,10"
                 Visibility="{Binding IsSummarySectionExpanded, Converter={StaticResource BoolToVis}}">
             <StackPanel Orientation="Vertical">
                 <Grid Margin="4,0,4,6">
-                    <TextBlock Text="SUMMARY" FontSize="11" FontWeight="Bold" Foreground="#64748B" VerticalAlignment="Center"/>
+                    <TextBlock Text="SUMMARY" FontSize="11" FontWeight="Bold" Foreground="#888888" VerticalAlignment="Center"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                         <TextBlock Text="{Binding TotalIssuesCount, StringFormat={}{0} Differences}" FontSize="11" FontWeight="SemiBold" Foreground="#F59E0B" Margin="0,0,8,0" VerticalAlignment="Center"/>
                         <Button Style="{StaticResource ModernButton}" Command="{Binding ToggleSummarySectionCommand}" Content="▲ Hide" FontSize="10" Padding="6,2" ToolTip="Collapse summary dashboard"/>
@@ -212,56 +217,56 @@
                     <Button Style="{StaticResource ModernButton}" Command="{Binding SetFilterCommand}" CommandParameter="Matched" Margin="2" Padding="4" ToolTip="{Binding SummaryMatchedTooltip}">
                         <StackPanel HorizontalAlignment="Center">
                             <TextBlock Text="{Binding SummaryMatched, StringFormat={}✓ {0}}" FontSize="13" FontWeight="Bold" Foreground="#22C55E" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Matched" FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Matched" FontSize="10" Foreground="#A6A6A6" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     <!-- Modified -->
                     <Button Style="{StaticResource ModernButton}" Command="{Binding SetFilterCommand}" CommandParameter="Modified" Margin="2" Padding="4" ToolTip="Modified slides and content">
                         <StackPanel HorizontalAlignment="Center">
                             <TextBlock Text="{Binding SummaryModified, StringFormat={}✎ {0}}" FontSize="13" FontWeight="Bold" Foreground="#F59E0B" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Modified" FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Modified" FontSize="10" Foreground="#A6A6A6" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     <!-- Added -->
                     <Button Style="{StaticResource ModernButton}" Command="{Binding SetFilterCommand}" CommandParameter="Added" Margin="2" Padding="4" ToolTip="Added slides and shapes">
                         <StackPanel HorizontalAlignment="Center">
                             <TextBlock Text="{Binding SummaryAdded, StringFormat={}+ {0}}" FontSize="13" FontWeight="Bold" Foreground="#38BDF8" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Added" FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Added" FontSize="10" Foreground="#A6A6A6" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     <!-- Deleted -->
                     <Button Style="{StaticResource ModernButton}" Command="{Binding SetFilterCommand}" CommandParameter="Deleted" Margin="2" Padding="4" ToolTip="Deleted slides and shapes">
                         <StackPanel HorizontalAlignment="Center">
                             <TextBlock Text="{Binding SummaryDeleted, StringFormat={}− {0}}" FontSize="13" FontWeight="Bold" Foreground="#EF4444" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Deleted" FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Deleted" FontSize="10" Foreground="#A6A6A6" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     <!-- Moved -->
                     <Button Style="{StaticResource ModernButton}" Command="{Binding SetFilterCommand}" CommandParameter="Moved" Margin="2" Padding="4" ToolTip="Moved slides and shapes">
                         <StackPanel HorizontalAlignment="Center">
                             <TextBlock Text="{Binding SummaryMoved, StringFormat={}↔ {0}}" FontSize="13" FontWeight="Bold" Foreground="#FBBF24" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Moved" FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Moved" FontSize="10" Foreground="#A6A6A6" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     <!-- Reordered -->
                     <Button Style="{StaticResource ModernButton}" Command="{Binding SetFilterCommand}" CommandParameter="Reordered" Margin="2" Padding="4" ToolTip="Reordered slides">
                         <StackPanel HorizontalAlignment="Center">
                             <TextBlock Text="{Binding SummaryReordered, StringFormat={}⇄ {0}}" FontSize="13" FontWeight="Bold" Foreground="#FBBF24" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Reordered" FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Reordered" FontSize="10" Foreground="#A6A6A6" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     <!-- Split -->
                     <Button Style="{StaticResource ModernButton}" Command="{Binding SetFilterCommand}" CommandParameter="Split" Margin="2" Padding="4" ToolTip="Split slides">
                         <StackPanel HorizontalAlignment="Center">
                             <TextBlock Text="{Binding SummarySplit, StringFormat={}⇢ {0}}" FontSize="13" FontWeight="Bold" Foreground="#06B6D4" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Split" FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Split" FontSize="10" Foreground="#A6A6A6" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     <!-- Merged -->
                     <Button Style="{StaticResource ModernButton}" Command="{Binding SetFilterCommand}" CommandParameter="Merged" Margin="2" Padding="4" ToolTip="Merged slides">
                         <StackPanel HorizontalAlignment="Center">
                             <TextBlock Text="{Binding SummaryMerged, StringFormat={}⇠ {0}}" FontSize="13" FontWeight="Bold" Foreground="#EC4899" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Merged" FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Merged" FontSize="10" Foreground="#A6A6A6" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </UniformGrid>
@@ -269,7 +274,7 @@
         </Border>
 
         <!-- 4b. Interactive Summary Dashboard (Collapsed Compact Bar) -->
-        <Border Grid.Row="3" Background="#131D31" CornerRadius="6" BorderBrush="#1E293B" BorderThickness="1" Padding="6,3" Margin="0,0,0,8"
+        <Border Grid.Row="3" Background="#2B2B2B" CornerRadius="4" BorderBrush="#383838" BorderThickness="1" Padding="6,3" Margin="0,0,0,8"
                 Visibility="{Binding IsSummarySectionCollapsed, Converter={StaticResource BoolToVis}}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -297,28 +302,54 @@
             </Grid>
         </Border>
 
-        <!-- 5. Search & Filter Bar -->
+        <!-- 5. Search & Filter Bar (Fast Debounced Search with Search Icon & Clear Button) -->
         <Grid Grid.Row="4" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <!-- Search Box -->
-            <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" Background="#1E293B" Foreground="#F8FAFC" BorderBrush="#334155" Padding="8,5" VerticalAlignment="Center" FontSize="12">
-                <TextBox.ToolTip>Search slide numbers, shape names, and text content...</TextBox.ToolTip>
-            </TextBox>
+            <!-- Search Box with Search Icon and Clear Button -->
+            <Border Background="#1C1C1C" CornerRadius="4" BorderBrush="#3E3E3E" BorderThickness="1" Padding="8,4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="🔍" FontSize="11" Foreground="#888888" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <TextBox Grid.Column="1" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+                             Background="Transparent" Foreground="#F3F3F3" BorderThickness="0" 
+                             CaretBrush="#F3F3F3" VerticalAlignment="Center" FontSize="12">
+                        <TextBox.ToolTip>Search slide numbers, shape names, and text content...</TextBox.ToolTip>
+                    </TextBox>
+                    <Button Grid.Column="2" Command="{Binding ClearSearchCommand}" 
+                            Visibility="{Binding HasSearchQuery, Converter={StaticResource BoolToVis}}"
+                            Background="Transparent" BorderThickness="0" Foreground="#888888" 
+                            Cursor="Hand" Padding="4,0" Content="✕" FontSize="11" ToolTip="Clear search">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="#F3F3F3"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </Border>
             <!-- Show Issues Only Checkbox -->
-            <CheckBox Grid.Column="1" Content="Issues only" IsChecked="{Binding ShowOnlyIssues}" Foreground="#94A3B8" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="11"/>
+            <CheckBox Grid.Column="1" Content="Issues only" IsChecked="{Binding ShowOnlyIssues}" Foreground="#A6A6A6" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="11"/>
         </Grid>
 
         <!-- 6. Results List / Tree -->
-        <Border Grid.Row="5" Background="#131D31" CornerRadius="8" BorderBrush="#1E293B" BorderThickness="1" Padding="4">
+        <Border Grid.Row="5" Background="#262626" CornerRadius="6" BorderBrush="#383838" BorderThickness="1" Padding="4">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl ItemsSource="{Binding FilteredResults}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <!-- Slide Expander Card -->
-                            <Border Background="#0F172A" CornerRadius="6" BorderBrush="{Binding MatchType, Converter={StaticResource SlideColorConv}}" BorderThickness="2,0,0,0" Margin="4,4,4,6" Padding="8">
+                            <Border Background="#202020" CornerRadius="4" BorderBrush="{Binding MatchType, Converter={StaticResource SlideColorConv}}" BorderThickness="2,0,0,0" Margin="4,4,4,6" Padding="8">
                                 <StackPanel Orientation="Vertical">
                                     <!-- Slide Header Row -->
                                     <Grid Cursor="Hand">
@@ -333,25 +364,25 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="{Binding StatusIcon}" Foreground="{Binding MatchType, Converter={StaticResource SlideColorConv}}" FontWeight="Bold" FontSize="14" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding TitleDisplay}" FontWeight="SemiBold" FontSize="13" Foreground="#F8FAFC" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                                        <Border Grid.Column="2" Background="#1E293B" CornerRadius="4" Padding="6,2">
+                                        <TextBlock Grid.Column="1" Text="{Binding TitleDisplay}" FontWeight="SemiBold" FontSize="13" Foreground="#F3F3F3" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                        <Border Grid.Column="2" Background="#2E2E2E" CornerRadius="3" Padding="6,2">
                                             <TextBlock Text="{Binding StatusBadgeText}" FontSize="9" FontWeight="Bold" Foreground="{Binding MatchType, Converter={StaticResource SlideColorConv}}"/>
                                         </Border>
                                     </Grid>
 
                                     <!-- Slide Summary Text -->
-                                    <TextBlock Text="{Binding SummaryText}" FontSize="11" Foreground="#94A3B8" Margin="20,2,0,4"/>
+                                    <TextBlock Text="{Binding SummaryText}" FontSize="11" Foreground="#A6A6A6" Margin="20,2,0,4"/>
 
                                     <!-- Speaker Notes Diff if any -->
-                                    <Border Visibility="{Binding SpeakerNotesDiff, Converter={StaticResource BoolToVis}}" Background="#1E293B" CornerRadius="4" Padding="6" Margin="20,2,0,4">
-                                        <TextBlock Text="{Binding SpeakerNotesDiff, StringFormat={}Notes: {0}}" FontSize="11" Foreground="#E2E8F0" TextWrapping="Wrap"/>
+                                    <Border Visibility="{Binding SpeakerNotesDiff, Converter={StaticResource BoolToVis}}" Background="#2B2B2B" CornerRadius="4" Padding="6" Margin="20,2,0,4">
+                                        <TextBlock Text="{Binding SpeakerNotesDiff, StringFormat={}Notes: {0}}" FontSize="11" Foreground="#CCCCCC" TextWrapping="Wrap"/>
                                     </Border>
 
                                     <!-- Child Shape Differences -->
                                     <ItemsControl ItemsSource="{Binding DisplayShapes}" Margin="16,4,0,0">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Border Background="#162032" CornerRadius="6" Padding="8" Margin="0,3,0,4" BorderBrush="#1E293B" BorderThickness="1" Cursor="Hand">
+                                                <Border Background="#272727" CornerRadius="4" Padding="8" Margin="0,3,0,4" BorderBrush="#383838" BorderThickness="1" Cursor="Hand">
                                                     <Border.InputBindings>
                                                         <MouseBinding Gesture="LeftClick" 
                                                                       Command="{Binding DataContext.NavigateToShapeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
@@ -366,17 +397,17 @@
                                                                 <ColumnDefinition Width="Auto"/>
                                                             </Grid.ColumnDefinitions>
                                                             <TextBlock Text="{Binding StatusIcon}" Foreground="{Binding MatchType, Converter={StaticResource ShapeColorConv}}" FontWeight="Bold" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                                            <TextBlock Grid.Column="1" Text="{Binding DisplayName}" FontSize="12" FontWeight="SemiBold" Foreground="#F8FAFC" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                                                            <Border Grid.Column="2" Background="#0F172A" CornerRadius="4" Padding="6,2">
+                                                            <TextBlock Grid.Column="1" Text="{Binding DisplayName}" FontSize="12" FontWeight="SemiBold" Foreground="#F3F3F3" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                                            <Border Grid.Column="2" Background="#1E1E1E" CornerRadius="3" Padding="6,2">
                                                                 <TextBlock Text="{Binding StatusBadgeText}" FontSize="9" FontWeight="Bold" Foreground="{Binding MatchType, Converter={StaticResource ShapeColorConv}}"/>
                                                             </Border>
                                                         </Grid>
 
                                                         <!-- Details note if any -->
-                                                        <TextBlock Text="{Binding Details}" FontSize="10" Foreground="#94A3B8" Margin="18,0,0,4"/>
+                                                        <TextBlock Text="{Binding Details}" FontSize="10" Foreground="#888888" Margin="18,0,0,4"/>
 
                                                         <!-- MODIFIED CONTENT: Full Source vs Destination & Difference Display -->
-                                                        <Border Visibility="{Binding IsModified, Converter={StaticResource BoolToVis}}" Background="#0B1120" CornerRadius="6" BorderBrush="#334155" BorderThickness="1" Padding="8" Margin="0,2,0,4">
+                                                        <Border Visibility="{Binding IsModified, Converter={StaticResource BoolToVis}}" Background="#1E1E1E" CornerRadius="4" BorderBrush="#383838" BorderThickness="1" Padding="8" Margin="0,2,0,4">
                                                             <StackPanel Orientation="Vertical">
                                                                 <!-- Source Text -->
                                                                 <Grid Visibility="{Binding HasSourceText, Converter={StaticResource BoolToVis}}" Margin="0,0,0,4">
@@ -384,10 +415,10 @@
                                                                         <ColumnDefinition Width="Auto"/>
                                                                         <ColumnDefinition Width="*"/>
                                                                     </Grid.ColumnDefinitions>
-                                                                    <Border Background="#450A0A" CornerRadius="3" Padding="4,1" Margin="0,0,6,0" VerticalAlignment="Top">
+                                                                    <Border Background="#3D1414" CornerRadius="3" Padding="4,1" Margin="0,0,6,0" VerticalAlignment="Top">
                                                                         <TextBlock Text="SOURCE" FontSize="9" FontWeight="Bold" Foreground="#F87171"/>
                                                                     </Border>
-                                                                    <TextBlock Grid.Column="1" Text="{Binding SourceText}" FontSize="11" Foreground="#CBD5E1" TextWrapping="Wrap"/>
+                                                                    <TextBlock Grid.Column="1" Text="{Binding SourceText}" FontSize="11" Foreground="#CCCCCC" TextWrapping="Wrap"/>
                                                                 </Grid>
 
                                                                 <!-- Destination Text -->
@@ -396,14 +427,14 @@
                                                                         <ColumnDefinition Width="Auto"/>
                                                                         <ColumnDefinition Width="*"/>
                                                                     </Grid.ColumnDefinitions>
-                                                                    <Border Background="#064E3B" CornerRadius="3" Padding="4,1" Margin="0,0,6,0" VerticalAlignment="Top">
+                                                                    <Border Background="#123020" CornerRadius="3" Padding="4,1" Margin="0,0,6,0" VerticalAlignment="Top">
                                                                         <TextBlock Text="DEST" FontSize="9" FontWeight="Bold" Foreground="#34D399"/>
                                                                     </Border>
-                                                                    <TextBlock Grid.Column="1" Text="{Binding DestinationText}" FontSize="11" Foreground="#F1F5F9" TextWrapping="Wrap"/>
+                                                                    <TextBlock Grid.Column="1" Text="{Binding DestinationText}" FontSize="11" Foreground="#F3F3F3" TextWrapping="Wrap"/>
                                                                 </Grid>
 
                                                                 <!-- Inline Rich Text Diff Highlight (Red strikethrough = deleted, Blue = inserted, Yellow = moved) -->
-                                                                <Border Visibility="{Binding HasTextChanges, Converter={StaticResource BoolToVis}}" Background="#0B1222" CornerRadius="6" BorderBrush="#334155" BorderThickness="1" Padding="8" Margin="0,3,0,0">
+                                                                <Border Visibility="{Binding HasTextChanges, Converter={StaticResource BoolToVis}}" Background="#161616" CornerRadius="4" BorderBrush="#383838" BorderThickness="1" Padding="8" Margin="0,3,0,0">
                                                                     <StackPanel Orientation="Vertical">
                                                                         <Grid Margin="0,0,0,5">
                                                                             <TextBlock Text="DIFFERENCE:" FontSize="9" FontWeight="Bold" Foreground="#F59E0B" VerticalAlignment="Center"/>
@@ -425,7 +456,7 @@
                                                         </Border>
 
                                                         <!-- DELETED CONTENT: Shows source text that was removed (Strikethrough & Red) -->
-                                                        <Border Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVis}}" Background="#2A0B0E" CornerRadius="6" BorderBrush="#7F1D1D" BorderThickness="1" Padding="8" Margin="0,2,0,4">
+                                                        <Border Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVis}}" Background="#331414" CornerRadius="4" BorderBrush="#5C2020" BorderThickness="1" Padding="8" Margin="0,2,0,4">
                                                             <StackPanel Orientation="Vertical">
                                                                 <TextBlock Text="DELETED FROM DESTINATION:" FontSize="9" FontWeight="Bold" Foreground="#EF4444" Margin="0,0,0,3"/>
                                                                 <TextBlock Text="{Binding SourceText}" FontSize="11" Foreground="#EF4444" TextDecorations="Strikethrough" FontWeight="Medium" TextWrapping="Wrap"/>
@@ -433,7 +464,7 @@
                                                         </Border>
 
                                                         <!-- INSERTED CONTENT: Shows new destination text (Blue) -->
-                                                        <Border Visibility="{Binding IsAdded, Converter={StaticResource BoolToVis}}" Background="#081E36" CornerRadius="6" BorderBrush="#0369A1" BorderThickness="1" Padding="8" Margin="0,2,0,4">
+                                                        <Border Visibility="{Binding IsAdded, Converter={StaticResource BoolToVis}}" Background="#102538" CornerRadius="4" BorderBrush="#1C4B75" BorderThickness="1" Padding="8" Margin="0,2,0,4">
                                                             <StackPanel Orientation="Vertical">
                                                                 <TextBlock Text="INSERTED IN DESTINATION:" FontSize="9" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,3"/>
                                                                 <TextBlock Text="{Binding DestinationText}" FontSize="11" Foreground="#38BDF8" FontWeight="SemiBold" TextWrapping="Wrap"/>
@@ -441,12 +472,12 @@
                                                         </Border>
 
                                                         <!-- MATCHED CONTENT: Shows text preview when shape is matched -->
-                                                        <Border Visibility="{Binding IsMatched, Converter={StaticResource BoolToVis}}" Background="#0F172A" CornerRadius="6" BorderBrush="#1E293B" BorderThickness="1" Padding="8" Margin="0,2,0,4">
-                                                            <TextBlock Text="{Binding DestinationText}" FontSize="11" Foreground="#94A3B8" TextWrapping="Wrap" MaxHeight="60" TextTrimming="CharacterEllipsis"/>
+                                                        <Border Visibility="{Binding IsMatched, Converter={StaticResource BoolToVis}}" Background="#1E1E1E" CornerRadius="4" BorderBrush="#333333" BorderThickness="1" Padding="8" Margin="0,2,0,4">
+                                                            <TextBlock Text="{Binding DestinationText}" FontSize="11" Foreground="#888888" TextWrapping="Wrap" MaxHeight="60" TextTrimming="CharacterEllipsis"/>
                                                         </Border>
 
                                                         <!-- Position Diff Display (Moved in Yellow) -->
-                                                        <Border Visibility="{Binding HasPositionDiff, Converter={StaticResource BoolToVis}}" Background="#241B08" CornerRadius="4" Padding="6,3" Margin="0,3,0,2" BorderBrush="#854D0E" BorderThickness="1">
+                                                        <Border Visibility="{Binding HasPositionDiff, Converter={StaticResource BoolToVis}}" Background="#2E2410" CornerRadius="4" Padding="6,3" Margin="0,3,0,2" BorderBrush="#6E5416" BorderThickness="1">
                                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                                 <TextBlock Text="↔ MOVED: " FontSize="10" FontWeight="Bold" Foreground="#FBBF24"/>
                                                                 <TextBlock Text="{Binding PositionDiff}" FontSize="10" Foreground="#FDE68A" FontWeight="Medium"/>
@@ -475,13 +506,13 @@
         </Border>
 
         <!-- 7. Bottom Action Bar -->
-        <Border Grid.Row="6" Margin="0,8,0,0" BorderBrush="#1E293B" BorderThickness="0,1,0,0" Padding="0,6,0,0">
+        <Border Grid.Row="6" Margin="0,8,0,0" BorderBrush="#383838" BorderThickness="0,1,0,0" Padding="0,6,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Click any item to navigate slide in PowerPoint" FontSize="10" Foreground="#64748B" VerticalAlignment="Center"/>
+                <TextBlock Text="Click any item to navigate slide in PowerPoint" FontSize="10" Foreground="#888888" VerticalAlignment="Center"/>
                 <Button Grid.Column="1" Style="{StaticResource ModernButton}" Command="{Binding ExportHtmlCommand}" Content="Export HTML" FontSize="11" Margin="6,0,0,0" Padding="12,4"/>
             </Grid>
         </Border>

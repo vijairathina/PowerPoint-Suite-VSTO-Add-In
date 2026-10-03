@@ -53,6 +53,7 @@ namespace OneAssist.SlideCompare.UI
         private string _progressText = "Ready";
         private bool _isSettingsOpen;
         private string _searchQuery = string.Empty;
+        private System.Windows.Threading.DispatcherTimer _searchDebounceTimer;
         private bool _showOnlyIssues = false;
         private FilterMode _selectedFilter = FilterMode.All;
 
@@ -81,8 +82,19 @@ namespace OneAssist.SlideCompare.UI
                 IsSummarySectionCollapsed = IsMaximizedResults;
             });
             ExportHtmlCommand = new RelayCommand(_ => ExportReportHtml(), _ => ComparisonResult != null);
+            ClearSearchCommand = new RelayCommand(_ => { SearchQuery = string.Empty; });
             NavigateToShapeCommand = new RelayCommand(p => NavigateToShape(p as ShapeComparisonResult));
             NavigateToSlideCommand = new RelayCommand(p => NavigateToSlide(p as SlideComparisonResult));
+
+            _searchDebounceTimer = new System.Windows.Threading.DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(200)
+            };
+            _searchDebounceTimer.Tick += (s, e) =>
+            {
+                _searchDebounceTimer.Stop();
+                ApplyFilters();
+            };
         }
 
         public void Initialize(PowerPoint.Application app)
@@ -162,8 +174,29 @@ namespace OneAssist.SlideCompare.UI
         public string SearchQuery
         {
             get => _searchQuery;
-            set { _searchQuery = value; OnPropertyChanged(); ApplyFilters(); }
+            set
+            {
+                if (_searchQuery != value)
+                {
+                    _searchQuery = value ?? string.Empty;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(HasSearchQuery));
+
+                    if (string.IsNullOrWhiteSpace(_searchQuery))
+                    {
+                        _searchDebounceTimer?.Stop();
+                        ApplyFilters();
+                    }
+                    else
+                    {
+                        _searchDebounceTimer?.Stop();
+                        _searchDebounceTimer?.Start();
+                    }
+                }
+            }
         }
+
+        public bool HasSearchQuery => !string.IsNullOrEmpty(_searchQuery);
 
         public bool ShowOnlyIssues
         {
@@ -303,6 +336,7 @@ namespace OneAssist.SlideCompare.UI
         public ICommand ToggleSummarySectionCommand { get; }
         public ICommand ToggleMaximizeResultsCommand { get; }
         public ICommand ExportHtmlCommand { get; }
+        public ICommand ClearSearchCommand { get; }
         public ICommand NavigateToShapeCommand { get; }
         public ICommand NavigateToSlideCommand { get; }
 
@@ -462,22 +496,11 @@ namespace OneAssist.SlideCompare.UI
                     break;
             }
 
-            // Apply Text Search Query
+            // Apply Text Search Query (Optimized cached lookup)
             if (!string.IsNullOrWhiteSpace(SearchQuery))
             {
                 string q = SearchQuery.Trim().ToLowerInvariant();
-                query = query.Where(s =>
-                    s.SourceSlideNumber.ToString().Contains(q) ||
-                    s.PrimaryDestinationSlide.ToString().Contains(q) ||
-                    (s.SourceTitle != null && s.SourceTitle.ToLowerInvariant().Contains(q)) ||
-                    (s.DestinationTitle != null && s.DestinationTitle.ToLowerInvariant().Contains(q)) ||
-                    (s.SummaryText != null && s.SummaryText.ToLowerInvariant().Contains(q)) ||
-                    (s.ShapeResults != null && s.ShapeResults.Any(sh =>
-                        (sh.SourceShapeName != null && sh.SourceShapeName.ToLowerInvariant().Contains(q)) ||
-                        (sh.DestinationShapeName != null && sh.DestinationShapeName.ToLowerInvariant().Contains(q)) ||
-                        (sh.SourceText != null && sh.SourceText.ToLowerInvariant().Contains(q)) ||
-                        (sh.DestinationText != null && sh.DestinationText.ToLowerInvariant().Contains(q)) ||
-                        (sh.TextDiff != null && sh.TextDiff.ToLowerInvariant().Contains(q)))));
+                query = query.Where(s => s.MatchesSearch(q));
             }
 
             FilteredResults = new ObservableCollection<SlideComparisonResult>(query);

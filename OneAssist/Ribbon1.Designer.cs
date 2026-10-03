@@ -53,7 +53,7 @@ namespace OneAssist
             this.tab1.Groups.Add(this.group1);
             this.tab1.Groups.Add(this.groupQuality);
             this.tab1.Groups.Add(this.groupCompare);
-            this.tab1.Label = "OneAssist";
+            this.tab1.Label = "PowerPoint-Suite";
             this.tab1.Name = "tab1";
             // 
             // group1
@@ -106,7 +106,7 @@ namespace OneAssist
             this.btnSlideCompare.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnSlideCompare.Label = "Slide Compare";
             this.btnSlideCompare.Name = "btnSlideCompare";
-            this.btnSlideCompare.OfficeImageId = "CompareMergePresentations";
+            this.btnSlideCompare.OfficeImageId = "ReviewCompare";
             this.btnSlideCompare.ShowImage = true;
             this.btnSlideCompare.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSlideCompare_Click);
             // 
