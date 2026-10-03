@@ -1,0 +1,424 @@
+<Project ToolsVersion="17.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <!--
+    This section defines project-level properties.
+
+    AssemblyName
+      Name of the output assembly.
+    Configuration
+      Specifies a default value for debug.
+    OutputType
+      Must be "Library" for VSTO.
+    Platform
+      Specifies what CPU the output of this project can run on.
+    NoStandardLibraries
+      Set to "false" for VSTO.
+    RootNamespace
+      In C#, this specifies the namespace given to new files. In VB, all objects are
+      wrapped in this namespace at runtime.
+  -->
+  <PropertyGroup>
+    <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C2DA9570-185A-4CC5-8118-CEDDF818DA3B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <RootNamespace>OneAssist</RootNamespace>
+    <AssemblyName>OneAssist</AssemblyName>
+    <LoadBehavior>3</LoadBehavior>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <DefineConstants>VSTO40;UseOfficeInterop</DefineConstants>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BootstrapperComponentsLocation>HomeSite</BootstrapperComponentsLocation>
+    <ResolveComReferenceSilent>true</ResolveComReferenceSilent>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <SignManifests>true</SignManifests>
+    <ManifestKeyFile>OneAssist_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>5C0DFD7AA581DC5BFF314AB82F6D35B48DEC5E90</ManifestCertificateThumbprint>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <PropertyGroup>
+    <!--
+      OfficeApplication
+        Add-in host application
+    -->
+    <OfficeApplication>PowerPoint</OfficeApplication>
+  </PropertyGroup>
+  <!--
+    This section defines properties that are set when the "Debug" configuration is selected.
+
+    DebugSymbols
+      If "true", create symbols (.pdb). If "false", do not create symbols.
+    DefineConstants
+      Constants defined for the preprocessor.
+    EnableUnmanagedDebugging
+      If "true", starting the debugger will attach both managed and unmanaged debuggers.
+    Optimize
+      If "true", optimize the build output. If "false", do not optimize.
+    OutputPath
+      Output path of project relative to the project file.
+    WarningLevel
+      Warning level for the compiler.
+  -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!--
+    This section defines properties that are set when the "Release" configuration is selected.
+
+    DebugSymbols
+      If "true", create symbols (.pdb). If "false", do not create symbols.
+    DefineConstants
+      Constants defined for the preprocessor.
+    EnableUnmanagedDebugging
+      If "true", starting the debugger will attach both managed and unmanaged debuggers.
+    Optimize
+      If "true", optimize the build output. If "false", do not optimize.
+    OutputPath
+      Output path of project relative to the project file.
+    WarningLevel
+      Warning level for the compiler.
+  -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!--
+    This section specifies references for the project.
+  -->
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="Accessibility" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Tools.Common.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <Choose>
+    <When Condition="$([System.String]::Copy(&quot;;$(DefineConstants);&quot;).ToLower().Contains(';useofficeinterop;')) or $([System.String]::Copy(&quot;,$(DefineConstants),&quot;).ToLower().Contains(',useofficeinterop,'))">
+      <ItemGroup>
+        <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+          <Private>False</Private>
+          <EmbedInteropTypes>true</EmbedInteropTypes>
+        </Reference>
+        <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+          <Private>False</Private>
+          <EmbedInteropTypes>true</EmbedInteropTypes>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <COMReference Include="Microsoft.Office.Core">
+          <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+          <VersionMajor>2</VersionMajor>
+          <VersionMinor>7</VersionMinor>
+          <Lcid>0</Lcid>
+          <WrapperTool>tlbimp</WrapperTool>
+          <Isolated>False</Isolated>
+          <EmbedInteropTypes>true</EmbedInteropTypes>
+        </COMReference>
+        <COMReference Include="Microsoft.Office.Interop.PowerPoint">
+          <Guid>{91493440-5A91-11CF-8700-00AA0060263B}</Guid>
+          <VersionMajor>2</VersionMajor>
+          <VersionMinor>11</VersionMinor>
+          <Lcid>0</Lcid>
+          <WrapperTool>tlbimp</WrapperTool>
+          <Isolated>False</Isolated>
+          <EmbedInteropTypes>true</EmbedInteropTypes>
+        </COMReference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <!--
+    This section defines the user source files that are part of the project.
+     
+    A "Compile" element specifies a source file to compile.
+    An "EmbeddedResource" element specifies an .resx file for embedded resources.
+    A "None" element specifies a file that is not to be passed to the compiler (for instance, 
+    a text file or XML file).
+    The "AppDesigner" element specifies the directory where the application properties files
+    can be found.
+  -->
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Ribbon1.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ribbon1.Designer.cs">
+      <DependentUpon>Ribbon1.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Ribbon1.resx">
+      <DependentUpon>Ribbon1.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="ThisAddIn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="ThisAddIn.Designer.xml">
+      <DependentUpon>ThisAddIn.cs</DependentUpon>
+    </None>
+    <Compile Include="ThisAddIn.Designer.cs">
+      <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageEditor\Core\AdjustmentSettings.cs" />
+    <Compile Include="ImageEditor\Core\BackgroundSettings.cs" />
+    <Compile Include="ImageEditor\Core\EditorEnums.cs" />
+    <Compile Include="ImageEditor\Core\FxSettings.cs" />
+    <Compile Include="ImageEditor\Core\HistoryStep.cs" />
+    <Compile Include="ImageEditor\Core\ImageDocument.cs" />
+    <Compile Include="ImageEditor\Core\ImageHistory.cs" />
+    <Compile Include="ImageEditor\Core\ImageMask.cs" />
+    <Compile Include="ImageEditor\Core\ShapeMetadata.cs" />
+    <Compile Include="ImageEditor\PowerPoint\PowerPointApplyService.cs" />
+    <Compile Include="ImageEditor\PowerPoint\PowerPointImageService.cs" />
+    <Compile Include="ImageEditor\PowerPoint\ShapeSelectionService.cs" />
+    <Compile Include="ImageEditor\PowerPoint\TaskPaneManager.cs" />
+    <Compile Include="ImageEditor\Processing\BackgroundRenderer.cs" />
+    <Compile Include="ImageEditor\Processing\DesignerFxService.cs" />
+    <Compile Include="ImageEditor\Processing\FastMarchingInpaintingService.cs" />
+    <Compile Include="ImageEditor\Processing\IBackgroundRemovalService.cs" />
+    <Compile Include="ImageEditor\Processing\ImageAdjuster.cs" />
+    <Compile Include="ImageEditor\Processing\IObjectRemovalService.cs" />
+    <Compile Include="ImageEditor\Processing\SmartBackgroundRemovalService.cs" />
+    <Compile Include="ImageEditor\UI\Converters\UIConverters.cs" />
+    <Compile Include="ImageEditor\UI\ImageCanvasControl.cs" />
+    <Compile Include="ImageEditor\UI\ImageEditorControl.xaml.cs">
+      <DependentUpon>ImageEditorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageEditor\UI\ImageEditorTaskPaneHost.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ImageEditor\UI\ImageEditorViewModel.cs" />
+    <Compile Include="ImageEditor\Utils\BitmapHelper.cs" />
+    <Compile Include="ImageEditor\Utils\RelayCommand.cs" />
+    <Compile Include="ImageEditor\Utils\TempFileManager.cs" />
+    <Compile Include="ImageEditor\Settings\EditorSettings.cs" />
+    <Compile Include="ImageEditor\Settings\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Assistant\Core\QualityEnums.cs" />
+    <Compile Include="Assistant\Core\QualityIssue.cs" />
+    <Compile Include="Assistant\Core\QualityReport.cs" />
+    <Compile Include="Assistant\Core\IQualityRule.cs" />
+    <Compile Include="Assistant\Core\RuleRegistry.cs" />
+    <Compile Include="Assistant\Core\PresentationAnalyzer.cs" />
+    <Compile Include="Assistant\Core\FixEngine.cs" />
+    <Compile Include="Assistant\Services\SafeInteropHelper.cs" />
+    <Compile Include="Assistant\Services\PowerPointUndoHelper.cs" />
+    <Compile Include="Assistant\Services\AlignmentService.cs" />
+    <Compile Include="Assistant\Services\ColorEngine.cs" />
+    <Compile Include="Assistant\Services\TypographyEngine.cs" />
+    <Compile Include="Assistant\Rules\Formatting\FontConsistencyRule.cs" />
+    <Compile Include="Assistant\Rules\Formatting\FontSizeConsistencyRule.cs" />
+    <Compile Include="Assistant\Rules\Formatting\TextBoxMarginRule.cs" />
+    <Compile Include="Assistant\Rules\Alignment\AlmostAlignedRule.cs" />
+    <Compile Include="Assistant\Rules\Alignment\InconsistentSpacingRule.cs" />
+    <Compile Include="Assistant\Rules\Alignment\OffSlideObjectRule.cs" />
+    <Compile Include="Assistant\Rules\Colors\ColorContrastRule.cs" />
+    <Compile Include="Assistant\Rules\Colors\ExcessiveColorsRule.cs" />
+    <Compile Include="Assistant\Settings\AssistantSettings.cs" />
+    <Compile Include="Assistant\Services\EditorialEngine.cs" />
+    <Compile Include="Assistant\Services\ConsistencyEngine.cs" />
+    <Compile Include="Assistant\Services\FormatPainterService.cs" />
+    <Compile Include="Assistant\Services\SmartReplaceService.cs" />
+    <Compile Include="Assistant\Services\SlideCleanupService.cs" />
+    <Compile Include="Assistant\Services\ImageQualityEngine.cs" />
+    <Compile Include="Assistant\Services\PresetManager.cs" />
+    <Compile Include="Assistant\Services\DesignerToolboxService.cs" />
+    <Compile Include="Assistant\Services\ContextAwareSelectionService.cs" />
+    <Compile Include="Assistant\Services\ShortcutConflictDetector.cs" />
+    <Compile Include="Assistant\Services\SlideConsistencyService.cs" />
+    <Compile Include="Assistant\Services\ReportExportService.cs" />
+    <Compile Include="Assistant\Services\AdminGovernanceService.cs" />
+    <Compile Include="Assistant\Services\LocalAnalyticsService.cs" />
+    <Compile Include="Assistant\Core\AnalysisCacheManager.cs" />
+    <Compile Include="Assistant\Rules\Editorial\EditorialTerminologyRule.cs" />
+    <Compile Include="Assistant\Rules\Editorial\EditorialGrammarRule.cs" />
+    <Compile Include="Assistant\Rules\Consistency\TitleConsistencyRule.cs" />
+    <Compile Include="Assistant\Rules\Layout\SlideCleanupRule.cs" />
+    <Compile Include="Assistant\Rules\Accessibility\MissingAltTextRule.cs" />
+    <Compile Include="Assistant\Rules\Images\ImageQualityRule.cs" />
+    <Compile Include="Assistant\Core\CustomRuleEngine.cs" />
+    <Compile Include="Assistant\Inspector\ShapeInspectorService.cs" />
+    <Compile Include="Assistant\Inspector\ShapeSwapService.cs" />
+    <Compile Include="Assistant\Selection\SmartSelectService.cs" />
+    <Compile Include="Assistant\Tokens\DesignTokenService.cs" />
+    <Compile Include="Assistant\Grid\SlideGridService.cs" />
+    <Compile Include="Assistant\Grid\SlideRestructuringService.cs" />
+    <Compile Include="Assistant\Grid\AgendaGeneratorService.cs" />
+    <Compile Include="Assistant\Grid\FooterManagerService.cs" />
+    <Compile Include="Assistant\DataVisualization\TableDesignerService.cs" />
+    <Compile Include="Assistant\DataVisualization\ChartAssistantService.cs" />
+    <Compile Include="Assistant\Layers\LayerManagerService.cs" />
+    <Compile Include="Assistant\Layers\MorphAssistantService.cs" />
+    <Compile Include="Assistant\Production\SlideSnapshotService.cs" />
+    <Compile Include="Assistant\Production\PresentationHealthCleanerService.cs" />
+    <Compile Include="Assistant\Production\PresentationSearchService.cs" />
+    <Compile Include="Assistant\CommandPalette\CommandPaletteService.cs" />
+    <Compile Include="Assistant\Scorecard\ScorecardService.cs" />
+    <Compile Include="Assistant\UI\AssistantConverters.cs" />
+    <Compile Include="Assistant\UI\DesignAssistantControl.xaml.cs">
+      <DependentUpon>DesignAssistantControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Assistant\UI\DesignAssistantTaskPaneHost.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Assistant\UI\DesignAssistantTaskPaneManager.cs" />
+    <Compile Include="Assistant\UI\DesignAssistantViewModel.cs" />
+    <Compile Include="Assistant\AILayout\Models\LayoutEnums.cs" />
+    <Compile Include="Assistant\AILayout\Models\SlideSemanticAnalysis.cs" />
+    <Compile Include="Assistant\AILayout\Models\LayoutSpecification.cs" />
+    <Compile Include="Assistant\AILayout\Analysis\SlideSemanticAnalyzer.cs" />
+    <Compile Include="Assistant\AILayout\Analysis\SlideFamilyDetector.cs" />
+    <Compile Include="Assistant\AILayout\Templates\LayoutTemplateCatalog.cs" />
+    <Compile Include="Assistant\AILayout\Planner\IAILayoutPlanner.cs" />
+    <Compile Include="Assistant\AILayout\Planner\LocalHeuristicLayoutPlanner.cs" />
+    <Compile Include="Assistant\AILayout\Planner\CloudAILayoutPlanner.cs" />
+    <Compile Include="Assistant\AILayout\Engine\LayoutConstraintEngine.cs" />
+    <Compile Include="Assistant\AILayout\Engine\PowerPointLayoutRenderer.cs" />
+    <Compile Include="Assistant\AILayout\Engine\ReferenceSlideEngine.cs" />
+    <Compile Include="Assistant\AILayout\Engine\SlideSequenceEngine.cs" />
+    <Compile Include="SlideCompare\Models\ComparisonEnums.cs" />
+    <Compile Include="SlideCompare\Models\ShapeSnapshot.cs" />
+    <Compile Include="SlideCompare\Models\SlideSnapshot.cs" />
+    <Compile Include="SlideCompare\Models\PresentationSnapshot.cs" />
+    <Compile Include="SlideCompare\Models\ComparisonResult.cs" />
+    <Compile Include="SlideCompare\Extraction\TextExtractor.cs" />
+    <Compile Include="SlideCompare\Extraction\TableExtractor.cs" />
+    <Compile Include="SlideCompare\Extraction\ChartExtractor.cs" />
+    <Compile Include="SlideCompare\Extraction\ShapeExtractor.cs" />
+    <Compile Include="SlideCompare\Extraction\SlideExtractor.cs" />
+    <Compile Include="SlideCompare\Extraction\PresentationExtractor.cs" />
+    <Compile Include="SlideCompare\Matching\SimilarityCalculator.cs" />
+    <Compile Include="SlideCompare\Matching\TextDiffEngine.cs" />
+    <Compile Include="SlideCompare\Matching\ContentMatchingEngine.cs" />
+    <Compile Include="SlideCompare\Matching\ShapeMatchingEngine.cs" />
+    <Compile Include="SlideCompare\Matching\SlideMappingEngine.cs" />
+    <Compile Include="SlideCompare\Comparison\FormattingComparisonEngine.cs" />
+    <Compile Include="SlideCompare\Comparison\SlideComparisonEngine.cs" />
+    <Compile Include="SlideCompare\Comparison\ShapeComparisonEngine.cs" />
+    <Compile Include="SlideCompare\Comparison\ComparisonEngine.cs" />
+    <Compile Include="SlideCompare\Navigation\PowerPointNavigationService.cs" />
+    <Compile Include="SlideCompare\Services\CompareSettings.cs" />
+    <Compile Include="SlideCompare\Services\ComparisonService.cs" />
+    <Compile Include="SlideCompare\Services\SlideCompareManager.cs" />
+    <Compile Include="SlideCompare\UI\SlideCompareConverters.cs" />
+    <Compile Include="SlideCompare\UI\SlideCompareViewModel.cs" />
+    <Compile Include="SlideCompare\UI\SlideCompareControl.xaml.cs">
+      <DependentUpon>SlideCompareControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SlideCompare\UI\SlideCompareTaskPaneHost.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SlideCompare\UI\SlideCompareTaskPaneManager.cs" />
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ImageEditor\UI\ImageEditorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ImageEditor\Settings\SettingsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Assistant\UI\DesignAssistantControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SlideCompare\UI\SlideCompareControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <!-- Include the build rules for a C# project. -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- Include additional build rules for an Office application add-in. -->
+  <Import Project="$(VSToolsPath)\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!-- This section defines VSTO properties that describe the host-changeable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
+        <ProjectProperties HostName="PowerPoint" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="PowerPoint" Language="cs" TemplatesPath="" DebugInfoExeName="#Software\Microsoft\Office\16.0\PowerPoint\InstallRoot\Path#powerpnt.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
+        <Host Name="PowerPoint" GeneratedCodeNamespace="OneAssist" IconIndex="0">
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="ThisAddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
+        </Host>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

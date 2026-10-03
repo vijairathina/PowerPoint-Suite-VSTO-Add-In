@@ -1,0 +1,52 @@
+## Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.sln.docstates
+*.opensdf
+*.sdf
+*.sublime-workspace
+
+## VSTO / ClickOnce
+*.publish/
+*.deploy
+publish/
+
+## Test Results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+## ReSharper / JetBrains / IDE tools
+_ReSharper*/
+*.ReSharper
+*.DotSettings.user
+
+## OS Files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+## Temporary files & scratch
+*.tmp
+*.temp
+*.log

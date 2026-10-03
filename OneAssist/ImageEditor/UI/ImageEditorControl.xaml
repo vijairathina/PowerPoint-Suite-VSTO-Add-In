@@ -1,0 +1,552 @@
+<UserControl x:Class="OneAssist.ImageEditor.UI.ImageEditorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OneAssist.ImageEditor.UI"
+             xmlns:converters="clr-namespace:OneAssist.ImageEditor.UI.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="900" d:DesignWidth="400"
+             FontFamily="Segoe UI, -apple-system, BlinkMacSystemFont, Roboto, sans-serif"
+             Background="#F5F6F8" Foreground="#262626">
+
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVis" />
+        <converters:BoolToVisibilityConverter x:Key="InverseBoolToVis" Invert="True" />
+
+        <!-- Styles -->
+        <Style x:Key="HeaderButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E5E7EB"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ToolTabButtonStyle" TargetType="RadioButton">
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#E5E7EB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#4B5563"/>
+            <Setter Property="Padding" Value="6,6"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F3F4F6"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="#D24726"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderBrush" Value="#D24726"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryActionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#D24726"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="5" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#B83A1D"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryActionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E5E7EB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <!-- Main Content -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> <!-- Header -->
+                <RowDefinition Height="Auto"/> <!-- Quick Action Bar -->
+                <RowDefinition Height="260"/>  <!-- Canvas Viewport -->
+                <RowDefinition Height="Auto"/> <!-- Canvas Controls -->
+                <RowDefinition Height="*"/>    <!-- Tool Subpanel -->
+                <RowDefinition Height="Auto"/> <!-- Bottom Actions -->
+            </Grid.RowDefinitions>
+
+            <!-- 1. Header -->
+            <Border Grid.Row="0" Background="#FFFFFF" BorderBrush="#E5E7EB" BorderThickness="0,0,0,1" Padding="14,10">
+                <DockPanel LastChildFill="True">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                        <Border Width="8" Height="20" Background="#D24726" CornerRadius="2" Margin="0,0,8,0"/>
+                        <TextBlock Text="OneAssist Image Editor" FontWeight="Bold" FontSize="14" Foreground="#111827" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                        <Button Content="⚙" Style="{StaticResource HeaderButtonStyle}" Click="OnOpenSettingsClick" ToolTip="Settings (keyboard shortcuts &amp; preferences)" FontSize="14" Padding="6,2"/>
+                        <Button Content="⟳ Detect" Style="{StaticResource HeaderButtonStyle}" Margin="4,0,0,0"
+                                Command="{Binding LoadSelectedImageCommand}" ToolTip="Load currently selected picture in PowerPoint"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- 2. Quick Action Bar -->
+            <Border Grid.Row="1" Background="#FAFAFA" BorderBrush="#E5E7EB" BorderThickness="0,0,0,1" Padding="10,6">
+                <DockPanel LastChildFill="False">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                        <Button Content="↶ Undo" Style="{StaticResource HeaderButtonStyle}" Command="{Binding UndoCommand}" ToolTip="Undo (Ctrl+Z)"/>
+                        <Button Content="↷ Redo" Style="{StaticResource HeaderButtonStyle}" Command="{Binding RedoCommand}" ToolTip="Redo (Ctrl+Y)"/>
+                        <Button Content="Reset" Style="{StaticResource HeaderButtonStyle}" Command="{Binding ResetCommand}" ToolTip="Reset to original picture"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                        <Button Content="Before / After" Style="{StaticResource HeaderButtonStyle}" Command="{Binding ToggleBeforeAfterCommand}" ToolTip="Toggle before/after comparison split view"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- 3. Canvas Container -->
+            <Grid Grid.Row="2" Background="#1E1E1E">
+                <!-- Dedicated Canvas -->
+                <local:ImageCanvasControl x:Name="CanvasCtrl" ViewModel="{Binding}" 
+                                         Visibility="{Binding HasImage, Converter={StaticResource BoolToVis}}"/>
+
+                <!-- Empty State (When no image is selected) -->
+                <Border Background="#F9FAFB" Visibility="{Binding HasImage, Converter={StaticResource InverseBoolToVis}}" Padding="24">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="🖼" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                        <TextBlock Text="No Image Selected" FontWeight="Bold" FontSize="15" Foreground="#1F2937" HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding SelectionStatusMessage}" TextWrapping="Wrap" TextAlignment="Center" FontSize="12" Foreground="#6B7280" Margin="0,0,0,12"/>
+                        <Button Content="Select Image in PowerPoint" Style="{StaticResource PrimaryActionButtonStyle}" Command="{Binding LoadSelectedImageCommand}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- 4. Canvas Controls (Zoom & Info) -->
+            <Border Grid.Row="3" Background="#FFFFFF" BorderBrush="#E5E7EB" BorderThickness="0,0,0,1" Padding="10,4">
+                <DockPanel LastChildFill="True">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding ImageWidth}" FontSize="11" Foreground="#6B7280"/>
+                        <TextBlock Text=" × " FontSize="11" Foreground="#6B7280"/>
+                        <TextBlock Text="{Binding ImageHeight}" FontSize="11" Foreground="#6B7280"/>
+                        <TextBlock Text=" px" FontSize="11" Foreground="#6B7280"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
+                        <TextBlock Text="Zoom:" FontSize="11" Foreground="#6B7280" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <Slider Minimum="0.2" Maximum="3.0" Value="{Binding Zoom, Mode=TwoWay}" Width="80" VerticalAlignment="Center"/>
+                        <Button Content="Fit" Style="{StaticResource HeaderButtonStyle}" Command="{Binding FitToPanelCommand}" Margin="4,0,0,0"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- 5. Tool Bar & Subpanels -->
+            <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="10,10,10,14">
+                    <!-- Tool Selectors (Grid of Buttons) -->
+                    <TextBlock Text="TOOLS" FontSize="11" FontWeight="Bold" Foreground="#6B7280" Margin="2,0,0,6"/>
+                    <WrapPanel Margin="0,0,0,12">
+                        <RadioButton Content="Remove BG" Style="{StaticResource ToolTabButtonStyle}" IsChecked="{Binding IsRemoveBgToolActive, Mode=OneWay}" Click="OnSelectRemoveBgTool"/>
+                        <RadioButton Content="Mark &amp; Remove" Style="{StaticResource ToolTabButtonStyle}" IsChecked="{Binding IsMarkRemoveToolActive, Mode=OneWay}" Click="OnSelectMarkRemoveTool"/>
+                        <RadioButton Content="Eraser" Style="{StaticResource ToolTabButtonStyle}" IsChecked="{Binding IsEraserToolActive, Mode=OneWay}" Click="OnSelectEraserTool"/>
+                        <RadioButton Content="Background" Style="{StaticResource ToolTabButtonStyle}" IsChecked="{Binding IsBackgroundToolActive, Mode=OneWay}" Click="OnSelectBackgroundTool"/>
+                        <RadioButton Content="Crop" Style="{StaticResource ToolTabButtonStyle}" IsChecked="{Binding IsCropToolActive, Mode=OneWay}" Click="OnSelectCropTool"/>
+                        <RadioButton Content="Adjust" Style="{StaticResource ToolTabButtonStyle}" IsChecked="{Binding IsAdjustToolActive, Mode=OneWay}" Click="OnSelectAdjustTool"/>
+                        <RadioButton Content="Transform" Style="{StaticResource ToolTabButtonStyle}" IsChecked="{Binding IsTransformToolActive, Mode=OneWay}" Click="OnSelectTransformTool"/>
+                        <RadioButton Content="✨ FX" Style="{StaticResource ToolTabButtonStyle}" IsChecked="{Binding IsFxToolActive, Mode=OneWay}" Click="OnSelectFxTool"/>
+                    </WrapPanel>
+
+                    <!-- SUBPANEL: Remove Background -->
+                    <Border Background="#FFFFFF" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10"
+                            Visibility="{Binding IsRemoveBgToolActive, Converter={StaticResource BoolToVis}}">
+                        <StackPanel>
+                            <TextBlock Text="Smart Background Removal" FontWeight="Bold" FontSize="13" Foreground="#111827" Margin="0,0,0,4"/>
+                            <TextBlock Text="Extracts the foreground subject and creates a transparent background." FontSize="11" Foreground="#6B7280" Margin="0,0,0,12" TextWrapping="Wrap"/>
+
+                            <TextBlock Text="Tolerance:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                            <DockPanel Margin="0,2,0,8">
+                                <TextBlock Text="{Binding BgTolerance}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="10" Maximum="90" Value="{Binding BgTolerance, Mode=TwoWay}"/>
+                            </DockPanel>
+
+                            <TextBlock Text="Feather / Edge Softness:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                            <DockPanel Margin="0,2,0,14">
+                                <TextBlock Text="{Binding BgFeather}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="0" Maximum="15" Value="{Binding BgFeather, Mode=TwoWay}"/>
+                            </DockPanel>
+
+                            <Button Content="✨ Remove Background" Style="{StaticResource PrimaryActionButtonStyle}" Command="{Binding RemoveBackgroundCommand}" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- SUBPANEL: Mark & Remove (Inpainting) -->
+                    <Border Background="#FFFFFF" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10"
+                            Visibility="{Binding IsMarkRemoveToolActive, Converter={StaticResource BoolToVis}}">
+                        <StackPanel>
+                            <TextBlock Text="Mark &amp; Remove Object" FontWeight="Bold" FontSize="13" Foreground="#111827" Margin="0,0,0,4"/>
+                            <TextBlock Text="Paint over unwanted objects or blemishes, then click Remove." FontSize="11" Foreground="#6B7280" Margin="0,0,0,12" TextWrapping="Wrap"/>
+
+                            <TextBlock Text="Brush Size:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                            <DockPanel Margin="0,2,0,12">
+                                <TextBlock Text="{Binding BrushSize}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="5" Maximum="150" Value="{Binding BrushSize, Mode=TwoWay}"/>
+                            </DockPanel>
+
+                            <Grid Margin="0,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Clear" Style="{StaticResource SecondaryActionButtonStyle}" Command="{Binding ClearMarkingsCommand}" Margin="0,0,4,0"/>
+                                <Button Grid.Column="1" Content="Remove Object" Style="{StaticResource PrimaryActionButtonStyle}" Command="{Binding RemoveMarkedAreaCommand}" Margin="4,0,0,0"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- SUBPANEL: Eraser & Restore -->
+                    <Border Background="#FFFFFF" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10"
+                            Visibility="{Binding IsEraserToolActive, Converter={StaticResource BoolToVis}}">
+                        <StackPanel>
+                            <TextBlock Text="Manual Eraser &amp; Restore" FontWeight="Bold" FontSize="13" Foreground="#111827" Margin="0,0,0,4"/>
+                            <TextBlock Text="Paint on the image to erase pixels or restore original details." FontSize="11" Foreground="#6B7280" Margin="0,0,0,12" TextWrapping="Wrap"/>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <RadioButton Content="Erase" GroupName="EraseRestoreGroup" IsChecked="True" Checked="OnEraseModeChecked" Margin="0,0,16,0" FontWeight="SemiBold"/>
+                                <RadioButton Content="Restore (Original)" GroupName="EraseRestoreGroup" Checked="OnRestoreModeChecked" FontWeight="SemiBold"/>
+                            </StackPanel>
+
+                            <TextBlock Text="Brush Size:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                            <DockPanel Margin="0,2,0,8">
+                                <TextBlock Text="{Binding BrushSize}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="2" Maximum="150" Value="{Binding BrushSize, Mode=TwoWay}"/>
+                            </DockPanel>
+
+                            <TextBlock Text="Hardness:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                            <DockPanel Margin="0,2,0,8">
+                                <TextBlock Text="{Binding BrushHardness}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="0" Maximum="100" Value="{Binding BrushHardness, Mode=TwoWay}"/>
+                            </DockPanel>
+
+                            <TextBlock Text="Opacity:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                            <DockPanel Margin="0,2,0,4">
+                                <TextBlock Text="{Binding BrushOpacity}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="1" Maximum="100" Value="{Binding BrushOpacity, Mode=TwoWay}"/>
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- SUBPANEL: Background -->
+                    <Border Background="#FFFFFF" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10"
+                            Visibility="{Binding IsBackgroundToolActive, Converter={StaticResource BoolToVis}}">
+                        <StackPanel>
+                            <TextBlock Text="Background Style" FontWeight="Bold" FontSize="13" Foreground="#111827" Margin="0,0,0,4"/>
+                            <TextBlock Text="Replace transparency with a solid color, gradient, or custom image." FontSize="11" Foreground="#6B7280" Margin="0,0,0,12" TextWrapping="Wrap"/>
+
+                            <WrapPanel Margin="0,0,0,10">
+                                <Button Content="Transparent" Style="{StaticResource HeaderButtonStyle}" Click="OnBgTransparentClick"/>
+                                <Button Content="White" Style="{StaticResource HeaderButtonStyle}" Click="OnBgWhiteClick"/>
+                                <Button Content="Black" Style="{StaticResource HeaderButtonStyle}" Click="OnBgBlackClick"/>
+                                <Button Content="Light Gray" Style="{StaticResource HeaderButtonStyle}" Click="OnBgLightGrayClick"/>
+                                <Button Content="Gradient" Style="{StaticResource HeaderButtonStyle}" Click="OnBgGradientClick"/>
+                                <Button Content="Custom Image..." Style="{StaticResource HeaderButtonStyle}" Command="{Binding SelectBackgroundImageCommand}"/>
+                            </WrapPanel>
+
+                            <!-- Gradient angle control -->
+                            <StackPanel Visibility="{Binding Document.Background.Type, Converter={StaticResource BoolToVis}}">
+                                <TextBlock Text="Gradient Angle:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                                <DockPanel Margin="0,2,0,4">
+                                    <TextBlock Text="{Binding GradientAngle, StringFormat={}{0:F0}°}" Width="35" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                    <Slider Minimum="0" Maximum="360" Value="{Binding GradientAngle, Mode=TwoWay}"/>
+                                </DockPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- SUBPANEL: Crop -->
+                    <Border Background="#FFFFFF" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10"
+                            Visibility="{Binding IsCropToolActive, Converter={StaticResource BoolToVis}}">
+                        <StackPanel>
+                            <TextBlock Text="Crop Image" FontWeight="Bold" FontSize="13" Foreground="#111827" Margin="0,0,0,4"/>
+                            <TextBlock Text="Select an aspect ratio preset or adjust the crop box." FontSize="11" Foreground="#6B7280" Margin="0,0,0,10" TextWrapping="Wrap"/>
+
+                            <WrapPanel Margin="0,0,0,12">
+                                <Button Content="Free" Style="{StaticResource HeaderButtonStyle}" Click="OnCropFreeClick"/>
+                                <Button Content="1:1 Square" Style="{StaticResource HeaderButtonStyle}" Click="OnCrop1x1Click"/>
+                                <Button Content="4:3" Style="{StaticResource HeaderButtonStyle}" Click="OnCrop4x3Click"/>
+                                <Button Content="16:9" Style="{StaticResource HeaderButtonStyle}" Click="OnCrop16x9Click"/>
+                            </WrapPanel>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Cancel" Style="{StaticResource SecondaryActionButtonStyle}" Command="{Binding CancelCropCommand}" Margin="0,0,4,0"/>
+                                <Button Grid.Column="1" Content="Apply Crop" Style="{StaticResource PrimaryActionButtonStyle}" Command="{Binding ApplyCropCommand}" Margin="4,0,0,0"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- SUBPANEL: Adjustments -->
+                    <Border Background="#FFFFFF" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10"
+                            Visibility="{Binding IsAdjustToolActive, Converter={StaticResource BoolToVis}}">
+                        <StackPanel>
+                            <DockPanel Margin="0,0,0,8">
+                                <TextBlock Text="Basic Adjustments" FontWeight="Bold" FontSize="13" Foreground="#111827" VerticalAlignment="Center"/>
+                                <Button Content="Reset" Style="{StaticResource HeaderButtonStyle}" Command="{Binding ResetAdjustmentsCommand}" HorizontalAlignment="Right"/>
+                            </DockPanel>
+
+                            <TextBlock Text="Brightness:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                            <DockPanel Margin="0,2,0,6">
+                                <TextBlock Text="{Binding Brightness}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="-100" Maximum="100" Value="{Binding Brightness, Mode=TwoWay}"/>
+                            </DockPanel>
+
+                            <TextBlock Text="Contrast:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                            <DockPanel Margin="0,2,0,6">
+                                <TextBlock Text="{Binding Contrast}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="-100" Maximum="100" Value="{Binding Contrast, Mode=TwoWay}"/>
+                            </DockPanel>
+
+                            <TextBlock Text="Saturation:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                            <DockPanel Margin="0,2,0,6">
+                                <TextBlock Text="{Binding Saturation}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="-100" Maximum="100" Value="{Binding Saturation, Mode=TwoWay}"/>
+                            </DockPanel>
+
+                            <TextBlock Text="Exposure:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                            <DockPanel Margin="0,2,0,6">
+                                <TextBlock Text="{Binding Exposure}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="-100" Maximum="100" Value="{Binding Exposure, Mode=TwoWay}"/>
+                            </DockPanel>
+
+                            <TextBlock Text="Sharpness:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                            <DockPanel Margin="0,2,0,6">
+                                <TextBlock Text="{Binding Sharpness}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="0" Maximum="100" Value="{Binding Sharpness, Mode=TwoWay}"/>
+                            </DockPanel>
+
+                            <TextBlock Text="Blur:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                            <DockPanel Margin="0,2,0,6">
+                                <TextBlock Text="{Binding Blur}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="0" Maximum="20" Value="{Binding Blur, Mode=TwoWay}"/>
+                            </DockPanel>
+
+                            <TextBlock Text="Opacity:" FontSize="11" FontWeight="SemiBold" Foreground="#374151"/>
+                            <DockPanel Margin="0,2,0,4">
+                                <TextBlock Text="{Binding ImageOpacity}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="0" Maximum="100" Value="{Binding ImageOpacity, Mode=TwoWay}"/>
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- SUBPANEL: Transform -->
+                    <Border Background="#FFFFFF" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10"
+                            Visibility="{Binding IsTransformToolActive, Converter={StaticResource BoolToVis}}">
+                        <StackPanel>
+                            <TextBlock Text="Rotate &amp; Flip" FontWeight="Bold" FontSize="13" Foreground="#111827" Margin="0,0,0,10"/>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="↺ Rotate Left 90°" Style="{StaticResource SecondaryActionButtonStyle}" Command="{Binding RotateLeftCommand}" Margin="0,0,4,0"/>
+                                <Button Grid.Column="1" Content="↻ Rotate Right 90°" Style="{StaticResource SecondaryActionButtonStyle}" Command="{Binding RotateRightCommand}" Margin="4,0,0,0"/>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="⇄ Flip Horizontal" Style="{StaticResource SecondaryActionButtonStyle}" Command="{Binding FlipHorizontalCommand}" Margin="0,0,4,0"/>
+                                <Button Grid.Column="1" Content="⇅ Flip Vertical" Style="{StaticResource SecondaryActionButtonStyle}" Command="{Binding FlipVerticalCommand}" Margin="4,0,0,0"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- SUBPANEL: FX Effects -->
+                    <Border Background="#FFFFFF" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10"
+                            Visibility="{Binding IsFxToolActive, Converter={StaticResource BoolToVis}}">
+                        <StackPanel>
+                            <TextBlock Text="✨ Designer FX" FontWeight="Bold" FontSize="13" Foreground="#111827" Margin="0,0,0,4"/>
+                            <TextBlock Text="Visual effects applied to the exported image (non-destructive preview)." FontSize="11" Foreground="#6B7280" Margin="0,0,0,12" TextWrapping="Wrap"/>
+
+                            <!-- Drop Shadow -->
+                            <CheckBox Content="Drop Shadow" IsChecked="{Binding FxDropShadowEnabled, Mode=TwoWay}" FontWeight="SemiBold" FontSize="11" Foreground="#374151" Margin="0,0,0,4"/>
+                            <StackPanel Visibility="{Binding FxDropShadowEnabled, Converter={StaticResource BoolToVis}}" Margin="14,0,0,10">
+                                <TextBlock Text="Offset X:" FontSize="11" Foreground="#374151"/>
+                                <DockPanel Margin="0,2,0,5">
+                                    <TextBlock Text="{Binding FxShadowOffsetX}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                    <Slider Minimum="-30" Maximum="30" Value="{Binding FxShadowOffsetX, Mode=TwoWay}"/>
+                                </DockPanel>
+                                <TextBlock Text="Offset Y:" FontSize="11" Foreground="#374151"/>
+                                <DockPanel Margin="0,2,0,5">
+                                    <TextBlock Text="{Binding FxShadowOffsetY}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                    <Slider Minimum="-30" Maximum="30" Value="{Binding FxShadowOffsetY, Mode=TwoWay}"/>
+                                </DockPanel>
+                                <TextBlock Text="Blur:" FontSize="11" Foreground="#374151"/>
+                                <DockPanel Margin="0,2,0,5">
+                                    <TextBlock Text="{Binding FxShadowBlur}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                    <Slider Minimum="0" Maximum="40" Value="{Binding FxShadowBlur, Mode=TwoWay}"/>
+                                </DockPanel>
+                                <TextBlock Text="Opacity %:" FontSize="11" Foreground="#374151"/>
+                                <DockPanel Margin="0,2,0,0">
+                                    <TextBlock Text="{Binding FxShadowOpacityPct}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                    <Slider Minimum="5" Maximum="100" Value="{Binding FxShadowOpacityPct, Mode=TwoWay}"/>
+                                </DockPanel>
+                            </StackPanel>
+
+                            <!-- Glow -->
+                            <CheckBox Content="Glow Halo" IsChecked="{Binding FxGlowEnabled, Mode=TwoWay}" FontWeight="SemiBold" FontSize="11" Foreground="#374151" Margin="0,6,0,4"/>
+                            <StackPanel Visibility="{Binding FxGlowEnabled, Converter={StaticResource BoolToVis}}" Margin="14,0,0,10">
+                                <TextBlock Text="Radius:" FontSize="11" Foreground="#374151"/>
+                                <DockPanel Margin="0,2,0,5">
+                                    <TextBlock Text="{Binding FxGlowRadius}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                    <Slider Minimum="2" Maximum="40" Value="{Binding FxGlowRadius, Mode=TwoWay}"/>
+                                </DockPanel>
+                                <TextBlock Text="Intensity %:" FontSize="11" Foreground="#374151"/>
+                                <DockPanel Margin="0,2,0,0">
+                                    <TextBlock Text="{Binding FxGlowIntensityPct}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                    <Slider Minimum="10" Maximum="100" Value="{Binding FxGlowIntensityPct, Mode=TwoWay}"/>
+                                </DockPanel>
+                            </StackPanel>
+
+                            <!-- Vignette -->
+                            <CheckBox Content="Vignette" IsChecked="{Binding FxVignetteEnabled, Mode=TwoWay}" FontWeight="SemiBold" FontSize="11" Foreground="#374151" Margin="0,6,0,4"/>
+                            <StackPanel Visibility="{Binding FxVignetteEnabled, Converter={StaticResource BoolToVis}}" Margin="14,0,0,10">
+                                <TextBlock Text="Strength %:" FontSize="11" Foreground="#374151"/>
+                                <DockPanel Margin="0,2,0,0">
+                                    <TextBlock Text="{Binding FxVignetteStrengthPct}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                    <Slider Minimum="5" Maximum="100" Value="{Binding FxVignetteStrengthPct, Mode=TwoWay}"/>
+                                </DockPanel>
+                            </StackPanel>
+
+                            <!-- Color Tint -->
+                            <CheckBox Content="Color Tint Overlay" IsChecked="{Binding FxTintEnabled, Mode=TwoWay}" FontWeight="SemiBold" FontSize="11" Foreground="#374151" Margin="0,6,0,4"/>
+                            <StackPanel Visibility="{Binding FxTintEnabled, Converter={StaticResource BoolToVis}}" Margin="14,0,0,10">
+                                <TextBlock Text="Strength %:" FontSize="11" Foreground="#374151"/>
+                                <DockPanel Margin="0,2,0,0">
+                                    <TextBlock Text="{Binding FxTintStrengthPct}" Width="30" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                    <Slider Minimum="5" Maximum="100" Value="{Binding FxTintStrengthPct, Mode=TwoWay}"/>
+                                </DockPanel>
+                            </StackPanel>
+
+                            <!-- Color Temperature -->
+                            <TextBlock Text="Color Temperature:" FontSize="11" FontWeight="SemiBold" Foreground="#374151" Margin="0,10,0,2"/>
+                            <DockPanel Margin="0,2,0,2">
+                                <TextBlock Text="{Binding FxColorTemperature}" Width="35" DockPanel.Dock="Right" TextAlignment="Right" FontSize="11" Foreground="#6B7280"/>
+                                <Slider Minimum="-100" Maximum="100" Value="{Binding FxColorTemperature, Mode=TwoWay}"/>
+                            </DockPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="❄ Cool" FontSize="10" Foreground="#60A5FA"/>
+                                <TextBlock Grid.Column="1" Text="Neutral" FontSize="10" Foreground="#9CA3AF" TextAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="Warm 🔥" FontSize="10" Foreground="#F59E0B" TextAlignment="Right"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 6. Bottom Action Bar -->
+            <Border Grid.Row="5" Background="#FFFFFF" BorderBrush="#E5E7EB" BorderThickness="0,1,0,0" Padding="14,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Content="Cancel" Style="{StaticResource SecondaryActionButtonStyle}" Command="{Binding CancelCommand}"/>
+                    <Button Grid.Column="2" Content="Apply to PowerPoint" Style="{StaticResource PrimaryActionButtonStyle}" Command="{Binding ApplyToPowerPointCommand}"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Processing Modal Overlay -->
+        <Border Background="#B3000000" Visibility="{Binding IsProcessing, Converter={StaticResource BoolToVis}}">
+            <Border Background="#FFFFFF" CornerRadius="8" Padding="24" Width="260" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding ProcessingStatusText}" FontWeight="Bold" FontSize="13" Foreground="#111827" Margin="0,0,0,12" TextAlignment="Center"/>
+                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding ProcessingProgress}" Height="6" Margin="0,0,0,8" Foreground="#D24726"/>
+                    <TextBlock Text="{Binding ProcessingProgress, StringFormat={}{0}%}" FontSize="11" Foreground="#6B7280" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

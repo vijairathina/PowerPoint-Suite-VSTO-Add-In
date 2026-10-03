@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\OneAssist\SlideCompare\Models\*.cs" Link="SlideCompare\Models\%(Filename)%(Extension)" />
+    <Compile Include="..\OneAssist\SlideCompare\Services\CompareSettings.cs" Link="SlideCompare\Services\%(Filename)%(Extension)" />
+    <Compile Include="..\OneAssist\SlideCompare\Matching\*.cs" Link="SlideCompare\Matching\%(Filename)%(Extension)" />
+    <Compile Include="..\OneAssist\SlideCompare\Comparison\*.cs" Link="SlideCompare\Comparison\%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>
